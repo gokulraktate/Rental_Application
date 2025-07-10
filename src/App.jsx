@@ -15,9 +15,11 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PrivateRoute from "./components/PrivateRoute";
 
-import Vehicles from "./pages/Vehicles"; // ✅ Vehicles page
-import Bookings from "./pages/Bookings"; // ✅ Bookings page
-import Payment from "./pages/Payment";   // ✅ Payment page
+import Vehicles from "./pages/Vehicles";
+import Bookings from "./pages/Bookings";
+import Payment from "./pages/Payment";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import BookingHistory from "./pages/BookingHistory"; // ✅ Booking History page added
 
 function AppContent() {
   const location = useLocation();
@@ -25,7 +27,7 @@ function AppContent() {
 
   useEffect(() => {
     setLoading(true);
-    const timeout = setTimeout(() => setLoading(false), 600); // adjust timing
+    const timeout = setTimeout(() => setLoading(false), 600);
     return () => clearTimeout(timeout);
   }, [location.pathname]);
 
@@ -49,7 +51,7 @@ function AppContent() {
           path="/bookings"
           element={
             <PrivateRoute>
-              <Bookings /> {/* ✅ Bookings component */}
+              <Bookings />
             </PrivateRoute>
           }
         />
@@ -58,7 +60,25 @@ function AppContent() {
           path="/payment"
           element={
             <PrivateRoute>
-              <Payment /> {/* ✅ Payment component */}
+              <Payment />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/payment-success"
+          element={
+            <PrivateRoute>
+              <PaymentSuccess />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/history"
+          element={
+            <PrivateRoute>
+              <BookingHistory />
             </PrivateRoute>
           }
         />

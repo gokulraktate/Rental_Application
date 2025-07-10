@@ -27,12 +27,7 @@ const Payment = () => {
     }
   }, []);
 
-  const handlePayment = () => {
-    // Your payment logic (Razorpay or other)
-    alert("Payment successful!");
-    sessionStorage.removeItem("directBooking");
-    navigate("/");
-  };
+  const isSameDay = pickup.toDateString() === dropoff.toDateString();
 
   const getTotalPrice = () => {
     const durationInHours = Math.max(
@@ -46,7 +41,53 @@ const Payment = () => {
     }, 0);
   };
 
-  const isSameDay = pickup.toDateString() === dropoff.toDateString();
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handlePayment = async () => {
+    const res = await loadRazorpayScript();
+
+    if (!res) {
+      alert("Razorpay SDK failed to load.");
+      return;
+    }
+
+    const amount = getTotalPrice() * 100; // in paise
+
+    const options = {
+      key: "rzp_test_AV8ijy8hIyMrji", // 🔁 Replace with your Razorpay Test Key
+      amount: amount,
+      currency: "INR",
+      name: "RentDrive",
+      description: "Vehicle Booking Payment",
+      handler: function (response) {
+        console.log("Payment success", response);
+        sessionStorage.removeItem("directBooking");
+        navigate("/payment-success");
+      },
+      prefill: {
+        name: "Test User",
+        email: "test@example.com",
+        contact: "9999999999",
+      },
+      notes: {
+        booking_time: `${pickup.toString()} - ${dropoff.toString()}`,
+      },
+      theme: {
+        color: "#505081",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
 
   return (
     <div className="pt-24 min-h-screen bg-gray-50 font-poppins px-4 md:px-20">
@@ -111,7 +152,7 @@ const Payment = () => {
             ))}
           </div>
 
-          {/* Summary & Button */}
+          {/* Summary & Pay */}
           <div className="text-center">
             <p className="text-xl font-bold mb-4 text-[#0F0E47]">
               Total Amount: ₹{getTotalPrice()}
