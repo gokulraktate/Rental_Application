@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+
 
   const [vehicles, setVehicles] = useState([]);
   const [pickup, setPickup] = useState(new Date());
@@ -62,7 +64,7 @@ const Payment = () => {
     const amount = getTotalPrice() * 100; // in paise
 
     const options = {
-      key: "rzp_test_AV8ijy8hIyMrji", // 🔁 Replace with your Razorpay Test Key
+      key: razorpayKey, // 🔁 Replace with your Razorpay Test Key
       amount: amount,
       currency: "INR",
       name: "RentDrive",
