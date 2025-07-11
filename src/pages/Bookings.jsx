@@ -15,30 +15,45 @@ const Bookings = () => {
   };
 
   const bookSelected = () => {
-    const selectedVehicles = cart.filter((item) => selectedIds.includes(item.cartItemId));
+    const selectedVehicles = cart.filter((item) =>
+      selectedIds.includes(item.cartItemId)
+    );
+
     if (selectedVehicles.length === 0) {
       setShowAlert(true);
       return;
     }
+
     const paymentData = selectedVehicles.map((v) => ({
       ...v,
       totalPrice: (v.pricePerHour || 120) * (v.quantity || 1),
     }));
+
+    // Remove booked items from cart
+    selectedVehicles.forEach((v) => removeFromCart(v.cartItemId));
+
     sessionStorage.setItem("directBooking", JSON.stringify(paymentData));
     navigate("/payment");
   };
 
   if (cart.length === 0) {
     return (
-      <div className="pt-32 text-center text-lg font-semibold">
-        No vehicles added to cart.
+      <div className="pt-100 pb-70 min-h-[60vh] flex flex-col items-center justify-center font-poppins text-center">
+        <h2 className="text-2xl font-semibold text-[#0F0E47] mb-4">
+          No vehicles added to cart.
+        </h2>
+        <p className="text-gray-500 text-sm">
+          Browse vehicles and add them to cart to continue booking.
+        </p>
       </div>
     );
   }
 
   return (
     <div className="pt-24 px-6 md:px-16 min-h-screen font-poppins bg-gray-50">
-      <h2 className="text-3xl font-bold text-[#0F0E47] mb-10 text-center">Your Bookings</h2>
+      <h2 className="text-3xl font-bold text-[#0F0E47] mb-10 text-center">
+        Your Bookings
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {cart.map((vehicle) => (
@@ -56,22 +71,34 @@ const Bookings = () => {
               alt={vehicle.title}
               className="w-full h-48 object-contain rounded-xl mb-4"
             />
-            <h3 className="text-xl font-semibold text-[#0F0E47]">{vehicle.title}</h3>
+            <h3 className="text-xl font-semibold text-[#0F0E47]">
+              {vehicle.title}
+            </h3>
             <p className="text-gray-600 my-2">{vehicle.description}</p>
             <p className="text-purple-600 font-bold">
               ₹{vehicle.pricePerHour || 120}/hr
             </p>
-            <p className="text-sm mt-1 text-gray-700">Quantity: {vehicle.quantity || 1}</p>
+            <p className="text-sm mt-1 text-gray-700">
+              Quantity: {vehicle.quantity || 1}
+            </p>
 
             <div className="flex gap-2 mt-4">
               <button
                 onClick={(e) => {
                   e.stopPropagation();
+
+                  // Create payment session for this single vehicle
+                  const totalPrice =
+                    (vehicle.pricePerHour || 120) * (vehicle.quantity || 1);
+
+                  // Remove it from cart
+                  removeFromCart(vehicle.cartItemId);
+
                   navigate("/payment", {
                     state: {
                       vehicle: {
                         ...vehicle,
-                        totalPrice: (vehicle.pricePerHour || 120) * (vehicle.quantity || 1),
+                        totalPrice,
                       },
                     },
                   });

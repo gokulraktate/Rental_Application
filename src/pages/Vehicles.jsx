@@ -4,6 +4,8 @@ import Loader from "../components/Loader";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Vehicles = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
@@ -13,6 +15,7 @@ const Vehicles = () => {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -27,6 +30,12 @@ const Vehicles = () => {
   const handleCloseModal = () => setSelectedVehicle(null);
 
   const handleBookNow = () => {
+    if (!currentUser) {
+      toast.error("Please login to continue booking");
+      navigate("/login");
+      return;
+    }
+
     if (selectedVehicle) {
       sessionStorage.setItem(
         "directBooking",
@@ -37,8 +46,15 @@ const Vehicles = () => {
   };
 
   const handleAddToCart = () => {
+    if (!currentUser) {
+      toast.error("Please login to add to cart");
+      navigate("/login");
+      return;
+    }
+
     if (selectedVehicle) {
       addToCart({ ...selectedVehicle, quantity });
+      toast.success(`${selectedVehicle.title} added to cart`);
       handleCloseModal();
     }
   };

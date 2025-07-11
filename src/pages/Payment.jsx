@@ -2,20 +2,36 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { db, auth } from "../firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
 
-
   const [vehicles, setVehicles] = useState([]);
   const [pickup, setPickup] = useState(new Date());
-  const [dropoff, setDropoff] = useState(new Date(Date.now() + 60 * 60 * 1000)); // default +1 hour
+  const [dropoff, setDropoff] = useState(new Date(Date.now() + 60 * 60 * 1000));
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    // Detect logged-in user
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) setUserId(user.uid);
+      else setUserId(null);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const direct = sessionStorage.getItem("directBooking");
-    if (direct) {
+
+    if (location.state?.vehicle) {
+      setVehicles([location.state.vehicle]);
+    } else if (direct) {
       try {
         const data = JSON.parse(direct);
         const isArray = Array.isArray(data);
@@ -27,7 +43,7 @@ const Payment = () => {
     } else {
       setVehicles([]);
     }
-  }, []);
+  }, [location.state]);
 
   const isSameDay = pickup.toDateString() === dropoff.toDateString();
 
@@ -64,13 +80,33 @@ const Payment = () => {
     const amount = getTotalPrice() * 100; // in paise
 
     const options = {
-      key: razorpayKey, // 🔁 Replace with your Razorpay Test Key
+      key: razorpayKey,
       amount: amount,
       currency: "INR",
       name: "RentDrive",
       description: "Vehicle Booking Payment",
-      handler: function (response) {
+      handler: async function (response) {
         console.log("Payment success", response);
+
+        if (!userId) {
+          alert("User not logged in. Cannot store booking.");
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, "bookings"), {
+            userId: userId,
+            vehicles: vehicles,
+            pickup: pickup.toISOString(),
+            dropoff: dropoff.toISOString(),
+            totalAmount: getTotalPrice(),
+            timestamp: serverTimestamp(),
+          });
+          console.log("Booking saved to Firestore.");
+        } catch (e) {
+          console.error("Failed to save booking:", e);
+        }
+
         sessionStorage.removeItem("directBooking");
         navigate("/payment-success");
       },
@@ -126,9 +162,7 @@ const Payment = () => {
                 showTimeSelect
                 minDate={pickup}
                 minTime={
-                  isSameDay
-                    ? pickup
-                    : new Date().setHours(0, 0, 0, 0)
+                  isSameDay ? pickup : new Date().setHours(0, 0, 0, 0)
                 }
                 maxTime={
                   isSameDay

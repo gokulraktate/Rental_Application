@@ -51,8 +51,8 @@ const Navbar = () => {
   const menuLinks = [
     { path: "/", label: "Home" },
     { path: "/vehicles", label: "Vehicles" },
-    { path: "/bookings", label: "Bookings" },
-    { path: "/history", label: "History" }, // ✅ NEW
+    { path: "/bookings", label: "Cart" },
+    { path: "/history", label: "History" }, 
   ];
 
   return (

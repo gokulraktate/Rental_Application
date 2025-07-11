@@ -19,7 +19,7 @@ import Vehicles from "./pages/Vehicles";
 import Bookings from "./pages/Bookings";
 import Payment from "./pages/Payment";
 import PaymentSuccess from "./pages/PaymentSuccess";
-import BookingHistory from "./pages/BookingHistory"; // ✅ Booking History page added
+import BookingHistory from "./pages/BookingHistory";
 
 function AppContent() {
   const location = useLocation();
@@ -38,15 +38,10 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        <Route
-          path="/vehicles"
-          element={
-            <PrivateRoute>
-              <Vehicles />
-            </PrivateRoute>
-          }
-        />
+        {/* ✅ Public Route: No login required */}
+        <Route path="/vehicles" element={<Vehicles />} />
 
+        {/* ✅ Protected Routes */}
         <Route
           path="/bookings"
           element={
@@ -55,7 +50,6 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/payment"
           element={
@@ -64,7 +58,6 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/payment-success"
           element={
@@ -73,7 +66,6 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/history"
           element={
@@ -83,6 +75,7 @@ function AppContent() {
           }
         />
 
+        {/* ✅ Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

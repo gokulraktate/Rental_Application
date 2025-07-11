@@ -41,17 +41,22 @@ const BookingHistory = () => {
     return () => unsubscribe && unsubscribe();
   }, []);
 
-  if (loading) return <p className="pt-24 text-center">Loading bookings...</p>;
+  if (loading)
+    return (
+      <div className="pt-24 text-center font-poppins text-gray-600">
+        Loading bookings...
+      </div>
+    );
 
   if (bookings.length === 0)
     return (
-      <div className="pt-24 text-center font-poppins">
+      <div className="pt-24 pb-16 text-center font-poppins min-h-screen bg-gray-50">
         <h2 className="text-2xl font-bold text-gray-700">No Bookings Found</h2>
       </div>
     );
 
   return (
-    <div className="pt-24 px-6 md:px-20 font-poppins">
+    <div className="pt-24 pb-16 px-6 md:px-20 font-poppins bg-gray-50 min-h-screen">
       <h2 className="text-3xl font-bold mb-8 text-center text-[#0F0E47]">
         Your Booking History
       </h2>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,35 +13,58 @@ const Login = () => {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert("Login successful!");
+      toast.success("Login successful!");
       navigate("/");
     } catch (error) {
-      alert(error.message);
+      toast.error("Login failed. Please check your credentials.");
+      console.error(error);
     }
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
-      <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow-md w-80">
-        <h2 className="text-2xl font-bold mb-4">Login</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-3 p-2 border rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-3 p-2 border rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600">Login</button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-[#f4f4fa] px-4">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-8">
+        <h2 className="text-3xl font-bold text-center text-[#0F0E47] mb-6">Welcome Back</h2>
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-[#0F0E47] mb-1">Email</label>
+            <input
+              type="email"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505081]"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-[#0F0E47] mb-1">Password</label>
+            <input
+              type="password"
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#505081]"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-[#505081] hover:bg-[#3e3e6f] text-white py-2 rounded-md text-lg font-semibold transition"
+          >
+            Login
+          </button>
+
+          <p className="text-center text-sm text-gray-600 mt-4">
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-[#505081] font-medium hover:underline">
+              Register here
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
