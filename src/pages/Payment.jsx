@@ -9,7 +9,7 @@ import { onAuthStateChanged } from "firebase/auth";
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const razorpayKey = import.meta.env.VITE_RAZORPAY_KEY_ID;
+  const razorpayKey = import.meta.env.production.VITE_RAZORPAY_KEY_ID;
 
   const [vehicles, setVehicles] = useState([]);
   const [pickup, setPickup] = useState(new Date());
