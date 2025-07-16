@@ -13,6 +13,7 @@ import Loader from "./components/Loader";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword"; // ✅ NEW Import
 import PrivateRoute from "./components/PrivateRoute";
 
 import Vehicles from "./pages/Vehicles";
@@ -78,6 +79,7 @@ function AppContent() {
         {/* ✅ Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ✅ NEW ROUTE */}
       </Routes>
       <Footer />
     </>
