@@ -26,7 +26,7 @@ const Bookings = () => {
 
     const paymentData = selectedVehicles.map((v) => ({
       ...v,
-      totalPrice: (v.pricePerHour || 120) * (v.quantity || 1),
+      totalPrice: (v.pricePerHour || 1) * (v.quantity || 1),
     }));
 
     // Remove booked items from cart
@@ -76,7 +76,7 @@ const Bookings = () => {
             </h3>
             <p className="text-gray-600 my-2">{vehicle.description}</p>
             <p className="text-purple-600 font-bold">
-              ₹{vehicle.pricePerHour || 120}/hr
+              ₹{vehicle.pricePerHour || 1}/hr
             </p>
             <p className="text-sm mt-1 text-gray-700">
               Quantity: {vehicle.quantity || 1}
@@ -89,7 +89,7 @@ const Bookings = () => {
 
                   // Create payment session for this single vehicle
                   const totalPrice =
-                    (vehicle.pricePerHour || 120) * (vehicle.quantity || 1);
+                    (vehicle.pricePerHour || 1) * (vehicle.quantity || 1);
 
                   // Remove it from cart
                   removeFromCart(vehicle.cartItemId);

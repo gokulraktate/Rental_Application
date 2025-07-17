@@ -81,7 +81,7 @@ const BookingHistory = () => {
             <ul className="text-sm text-gray-700 list-disc ml-5">
               {booking.vehicles?.map((v, i) => (
                 <li key={i}>
-                  {v.title} - ₹{v.pricePerHour || 120}/hr × {v.quantity}
+                  {v.title} - ₹{v.pricePerHour || 1}/hr × {v.quantity}
                 </li>
               ))}
             </ul>
