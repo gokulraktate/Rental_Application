@@ -53,7 +53,7 @@ const Payment = () => {
       Math.ceil((dropoff - pickup) / (1000 * 60 * 60))
     );
     return vehicles.reduce((acc, vehicle) => {
-      const pricePerHour = vehicle.pricePerHour || 120;
+      const pricePerHour = vehicle.pricePerHour || 1;
       const qty = vehicle.quantity || 1;
       return acc + qty * pricePerHour * durationInHours;
     }, 0);
@@ -182,7 +182,7 @@ const Payment = () => {
                 <h3 className="text-xl font-semibold text-[#0F0E47] mb-1">{v.title}</h3>
                 <p className="text-sm text-gray-600 mb-2">{v.description}</p>
                 <p className="text-gray-700 font-medium">
-                  ₹{v.pricePerHour || 120}/hr × {v.quantity || 1} unit(s)
+                  ₹{v.pricePerHour || 1}/hr × {v.quantity || 1} unit(s)
                 </p>
               </div>
             ))}

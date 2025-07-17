@@ -91,7 +91,7 @@ const Vehicles = () => {
               {vehicle.description}
             </p>
             <p className="text-purple-600 font-bold">
-              ₹{vehicle.pricePerHour || 120}/hr
+              ₹{vehicle.pricePerHour || 1}/hr
             </p>
           </div>
         ))}
@@ -138,7 +138,7 @@ const Vehicles = () => {
                   {selectedVehicle.description}
                 </p>
                 <p className="text-purple-600 font-bold text-lg mb-6">
-                  ₹{selectedVehicle.pricePerHour || 120}/hr
+                  ₹{selectedVehicle.pricePerHour || 1}/hr
                 </p>
 
                 <div className="flex items-center gap-4 mb-6">
