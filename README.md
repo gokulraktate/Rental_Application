@@ -6,6 +6,13 @@
 
 A **fully responsive** and **feature-rich** vehicle rental application built with **React**, **Tailwind CSS**, **Firebase**, and **Razorpay**. Users can seamlessly browse, book, and pay for vehicles online with ease!
 
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![React](https://img.shields.io/badge/React-18.2-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3-blueviolet)
+![Firebase](https://img.shields.io/badge/Firebase-Cloud-orange)
+![Razorpay](https://img.shields.io/badge/Razorpay-Integrated-00bfa5)
+
+
 🔗 **Live Demo:** [https://rentdrive-b6985.web.app/](https://rentdrive-b6985.web.app/)
 
 ---
@@ -53,10 +60,12 @@ A **fully responsive** and **feature-rich** vehicle rental application built wit
 
 ## 📸 Screenshots
 
-Home Page  ![Home](./src/assets/Images/home.png)
- Vehicle Listing ![Vehicles](./src/assets/Images/vehicle.png) 
-Payment ![Payment](./src/assets/Images/payment.png) 
-
+📱Home Page  ![Home](./src/assets/Images/home.png)
+---
+🚗Vehicle Listing ![Vehicles](./src/assets/Images/vehicle.png) 
+---
+💳Payment ![Payment](./src/assets/Images/payment.png) 
+---
 ---
 
 ## 🧪 Test Razorpay Payments
