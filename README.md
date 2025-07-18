@@ -139,9 +139,9 @@ npm run dev
 🔗 [LinkedIn](https://www.linkedin.com/in/gokul-raktate-3a6789216/)
 
 ---
-<!-- 
+
 ## 📜 License
 
-This project is licensed under the [MIT License](LICENSE). -->
+This project is licensed under the [MIT License](LICENSE).
 
 
